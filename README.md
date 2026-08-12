@@ -3,6 +3,9 @@ basically a better version of [SliderLaunch](https://github.com/dumcatt/SliderLa
 
 requires [.NET 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
+<img height="300" alt="image" src="https://github.com/user-attachments/assets/67e5cc32-6d44-4121-88a4-8f2ac546a941" />
+
+
 # Configuration
 games.ini
 ```
@@ -22,3 +25,4 @@ logo=logo.png (path to your game logo)
 colour=#ffffff
 category=Category1
 ```
+Font can be customized by adding font.ttf next to the exe
