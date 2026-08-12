@@ -1,0 +1,185 @@
+<Window x:Class="ChuniLauncher.Net.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Launcher" 
+        WindowStyle="None" 
+        WindowState="Maximized" 
+        Topmost="True"
+        Background="Black"
+        Foreground="White"
+        PreviewKeyDown="Window_PreviewKeyDown"
+        Loaded="Window_Loaded">
+    
+    <Grid>
+        <!-- Background Image -->
+        <Image x:Name="BackgroundImage" Stretch="Fill" />
+        
+        <Canvas>
+            <!-- Title -->
+            <TextBlock x:Name="TitleText" 
+                       Text="GROUND SLIDER LAUNCHER" 
+                       Foreground="White" 
+                       FontSize="24"
+                       Canvas.Top="60" 
+                       HorizontalAlignment="Center">
+                <TextBlock.Effect>
+                    <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.8" BlurRadius="4"/>
+                </TextBlock.Effect>
+            </TextBlock>
+                       
+            <!-- Category Carousel -->
+            <StackPanel x:Name="CategoryPanel" 
+                        Orientation="Horizontal"
+                        Canvas.Top="140" 
+                        Canvas.Left="200" />
+            
+            <!-- Games List -->
+            <ListBox x:Name="GamesList" 
+                     Canvas.Top="180" 
+                     Canvas.Left="200" 
+                     Width="700"
+                     Height="700"
+                     Background="Transparent" 
+                     BorderThickness="0"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     FocusVisualStyle="{x:Null}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border Background="Transparent" Padding="0,4">
+                                        <ContentPresenter />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock FontSize="24">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{Binding TextColor}" />
+                                    <Setter Property="Text" Value="{Binding Name, StringFormat='   {0}'}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                            <Setter Property="Text" Value="{Binding Name, StringFormat='>> {0}'}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                            <TextBlock.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.8" BlurRadius="4"/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            
+            <!-- Game Logo -->
+            <Image x:Name="LogoImage"
+                   Canvas.Top="180" 
+                   Canvas.Left="1000" 
+                   Width="800" 
+                   Height="700" 
+                   Stretch="Uniform" 
+                   Source="{Binding ElementName=GamesList, Path=SelectedItem.LogoPath}" />
+            
+            <!-- Countdown Text -->
+            <TextBlock x:Name="CountdownText" 
+                       Foreground="White" 
+                       FontSize="24"
+                       HorizontalAlignment="Center">
+                <TextBlock.Effect>
+                    <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.8" BlurRadius="4"/>
+                </TextBlock.Effect>
+            </TextBlock>
+        </Canvas>
+
+        <!-- Slider UI Bar -->
+        <StackPanel x:Name="SliderUI" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="130" Margin="0,0,0,0">
+            <Grid x:Name="UI_Up" Width="236" Margin="0,0,2,0">
+                <Rectangle>
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#0000FF00" Offset="0"/>
+                            <GradientStop Color="#7F00FF00" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <TextBlock Text="▲" Foreground="White" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,13">
+                    <TextBlock.Effect><DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.8" BlurRadius="4"/></TextBlock.Effect>
+                </TextBlock>
+            </Grid>
+            <Grid x:Name="UI_Down" Width="236" Margin="0,0,2,0">
+                <Rectangle>
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#0000FF00" Offset="0"/>
+                            <GradientStop Color="#7F00FF00" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <TextBlock Text="▼" Foreground="White" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,13">
+                    <TextBlock.Effect><DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.8" BlurRadius="4"/></TextBlock.Effect>
+                </TextBlock>
+            </Grid>
+            <Grid x:Name="UI_Select" Width="316" Margin="0,0,2,0">
+                <Rectangle>
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#00FFA500" Offset="0"/>
+                            <GradientStop Color="#7FFFA500" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <TextBlock Text="SELECT" Foreground="White" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,13">
+                    <TextBlock.Effect><DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.8" BlurRadius="4"/></TextBlock.Effect>
+                </TextBlock>
+            </Grid>
+            <Grid x:Name="UI_Prev" Width="156" Margin="0,0,2,0">
+                <Rectangle>
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#00FFFFFF" Offset="0"/>
+                            <GradientStop Color="#7FFFFFFF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <TextBlock Text="◀" Foreground="White" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,13">
+                    <TextBlock.Effect><DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.8" BlurRadius="4"/></TextBlock.Effect>
+                </TextBlock>
+            </Grid>
+            <Grid x:Name="UI_Next" Width="156" Margin="0,0,2,0">
+                <Rectangle>
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#00FFFFFF" Offset="0"/>
+                            <GradientStop Color="#7FFFFFFF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <TextBlock Text="▶" Foreground="White" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,13">
+                    <TextBlock.Effect><DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.8" BlurRadius="4"/></TextBlock.Effect>
+                </TextBlock>
+            </Grid>
+            <Grid x:Name="UI_Exit" Width="156" Margin="0">
+                <Rectangle>
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#00FF0000" Offset="0"/>
+                            <GradientStop Color="#7FFF0000" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <TextBlock Text="EXIT" Foreground="White" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,13">
+                    <TextBlock.Effect><DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.8" BlurRadius="4"/></TextBlock.Effect>
+                </TextBlock>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>

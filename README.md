@@ -1,2 +1,3 @@
-# ChuniLauncher
-chunithm launcher for cabinets
+# SliderLaunch
+basically a better version of [SliderLaunch](https://github.com/dumcatt/SliderLaunch)
+
