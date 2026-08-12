@@ -20,5 +20,5 @@ SideBrightness=30
 game=game1.bat (path to your game)
 logo=logo.png (path to your game logo)
 colour=#ffffff
-categeory=Categeory1
+categeory=Category1
 ```
