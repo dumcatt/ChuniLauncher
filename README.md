@@ -1,4 +1,4 @@
-# SliderLauncher
+# ChuniLauncher
 basically a better version of [SliderLaunch](https://github.com/dumcatt/SliderLaunch)
 
 requires [.NET 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
