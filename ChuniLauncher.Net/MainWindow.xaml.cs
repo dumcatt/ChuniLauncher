@@ -290,7 +290,7 @@ namespace ChuniLauncher.Net
                         if (key == "game") currentGame.ExecutablePath = value;
                         if (key == "logo") currentGame.LogoPath = GetAbsoluteAssetPath(value);
                         if (key == "colour") currentGame.ColorString = value;
-                        if (key == "category" || key == "categeory") currentGame.Category = value;
+                        if (key == "category") currentGame.Category = value;
                     }
                 }
 
