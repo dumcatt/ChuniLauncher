@@ -1,5 +1,5 @@
 # ChuniLauncher
-basically a better version of [SliderLaunch](https://github.com/dumcatt/SliderLaunch)
+basically a better version of [SliderLaunch](https://github.com/dumcatt/SliderLaunch) with built-in native serial slider and LED support.
 
 requires [.NET 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
