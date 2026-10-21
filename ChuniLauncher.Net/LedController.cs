@@ -158,8 +158,18 @@ namespace ChuniLauncher.Net
             }
             foreach (var port in _serialPorts)
             {
-                if (port.IsOpen) port.Close();
+                if (!port.IsOpen) continue;
+                try
+                {
+                    // Reset the board so the game can initialise it from a clean state
+                    SendPacket(port, 0x01, 0x02, 0x10, new byte[] { 0xD9 });
+                    port.BaseStream.Flush();
+                    Thread.Sleep(50);
+                    port.Close();
+                }
+                catch { }
             }
+            _serialPorts.Clear();
         }
     }
 }

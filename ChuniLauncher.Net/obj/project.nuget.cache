@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "dgSpecHash": "YvhwZYiYkAI=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\papha\\Documents\\ChuniLauncher\\ChuniLauncher.Net\\ChuniLauncher.Net.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.android-arm.runtime.native.system.io.ports\\10.0.11\\runtime.android-arm.runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.android-arm64.runtime.native.system.io.ports\\10.0.11\\runtime.android-arm64.runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.android-x64.runtime.native.system.io.ports\\10.0.11\\runtime.android-x64.runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.android-x86.runtime.native.system.io.ports\\10.0.11\\runtime.android-x86.runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.linux-arm.runtime.native.system.io.ports\\10.0.11\\runtime.linux-arm.runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.linux-arm64.runtime.native.system.io.ports\\10.0.11\\runtime.linux-arm64.runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.linux-bionic-arm64.runtime.native.system.io.ports\\10.0.11\\runtime.linux-bionic-arm64.runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.linux-bionic-x64.runtime.native.system.io.ports\\10.0.11\\runtime.linux-bionic-x64.runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.linux-musl-arm.runtime.native.system.io.ports\\10.0.11\\runtime.linux-musl-arm.runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.linux-musl-arm64.runtime.native.system.io.ports\\10.0.11\\runtime.linux-musl-arm64.runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.linux-musl-x64.runtime.native.system.io.ports\\10.0.11\\runtime.linux-musl-x64.runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.linux-x64.runtime.native.system.io.ports\\10.0.11\\runtime.linux-x64.runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.maccatalyst-arm64.runtime.native.system.io.ports\\10.0.11\\runtime.maccatalyst-arm64.runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.maccatalyst-x64.runtime.native.system.io.ports\\10.0.11\\runtime.maccatalyst-x64.runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.native.system.io.ports\\10.0.11\\runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.osx-arm64.runtime.native.system.io.ports\\10.0.11\\runtime.osx-arm64.runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\runtime.osx-x64.runtime.native.system.io.ports\\10.0.11\\runtime.osx-x64.runtime.native.system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\system.io.ports\\10.0.11\\system.io.ports.10.0.11.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.31\\microsoft.netcore.app.ref.8.0.31.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.31\\microsoft.windowsdesktop.app.ref.8.0.31.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.31\\microsoft.aspnetcore.app.ref.8.0.31.nupkg.sha512",
+    "C:\\Users\\papha\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\8.0.31\\microsoft.netcore.app.host.win-x64.8.0.31.nupkg.sha512"
+  ],
+  "logs": []
+}

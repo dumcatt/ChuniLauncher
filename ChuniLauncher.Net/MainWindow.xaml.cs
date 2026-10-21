@@ -36,6 +36,15 @@ namespace ChuniLauncher.Net
         private string _led2Port = "";
         private double _sideBrightness = 1.0;
 
+        private const int RelaunchDelayMs = 3000;
+        private Process? _gameProcess;
+        private bool _watchingGame;
+
+        private bool _io4Enabled = true;
+        private int _io4TestButton = 10;
+        private int _io4ServiceButton = 7;
+        private Io4Controller? _io4Controller;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -76,25 +85,8 @@ namespace ChuniLauncher.Net
             }
             
 
-            
-            if (!string.IsNullOrEmpty(_sliderPort))
-            {
-                _sliderController = new SliderController(_sliderPort, _sliderSensitivity);
-                _sliderController.OnUp += () => Dispatcher.Invoke(() => ProcessInput(Key.Up));
-                _sliderController.OnDown += () => Dispatcher.Invoke(() => ProcessInput(Key.Down));
-                _sliderController.OnSelect += () => Dispatcher.Invoke(() => ProcessInput(Key.Enter));
-                _sliderController.OnNextCategory += () => Dispatcher.Invoke(() => ProcessInput(Key.Right));
-                _sliderController.OnPrevCategory += () => Dispatcher.Invoke(() => ProcessInput(Key.Left));
-                _sliderController.OnExit += () => Dispatcher.Invoke(() => Close());
-                
-                _sliderController.OnTouchStateChanged += (block, isTouched) => Dispatcher.Invoke(() => AnimateBlock(block, isTouched));
-            }
 
-            if (!string.IsNullOrEmpty(_led1Port) || !string.IsNullOrEmpty(_led2Port))
-            {
-                _ledController = new LedController(_led1Port, _led2Port, _sideBrightness);
-            }
-            
+            InitializeDevices();
             UpdateCategoryDisplay();
             GamesList.SelectionChanged += GamesList_SelectionChanged;
 
@@ -284,6 +276,9 @@ namespace ChuniLauncher.Net
                         if (key == "led1port") _led1Port = value;
                         if (key == "led2port") _led2Port = value;
                         if (key == "sidebrightness" && int.TryParse(value, out int sb)) _sideBrightness = Math.Min(100, Math.Max(0, sb)) / 100.0;
+                        if (key == "io4") _io4Enabled = value == "1" || value.ToLower() == "true";
+                        if (key == "io4testbutton" && int.TryParse(value, out int testButton)) _io4TestButton = testButton;
+                        if (key == "io4servicebutton" && int.TryParse(value, out int serviceButton)) _io4ServiceButton = serviceButton;
                     }
                     else if (currentGame != null)
                     {
@@ -502,10 +497,80 @@ namespace ChuniLauncher.Net
             return isHandledKey;
         }
         
+        private void InitializeDevices()
+        {
+            if (!string.IsNullOrEmpty(_sliderPort))
+            {
+                _sliderController = new SliderController(_sliderPort, _sliderSensitivity);
+                _sliderController.OnUp += () => Dispatcher.Invoke(() => ProcessInput(Key.Up));
+                _sliderController.OnDown += () => Dispatcher.Invoke(() => ProcessInput(Key.Down));
+                _sliderController.OnSelect += () => Dispatcher.Invoke(() => ProcessInput(Key.Enter));
+                _sliderController.OnNextCategory += () => Dispatcher.Invoke(() => ProcessInput(Key.Right));
+                _sliderController.OnPrevCategory += () => Dispatcher.Invoke(() => ProcessInput(Key.Left));
+                _sliderController.OnExit += () => Dispatcher.Invoke(() => Close());
+
+                _sliderController.OnTouchStateChanged += (block, isTouched) => Dispatcher.Invoke(() => AnimateBlock(block, isTouched));
+            }
+
+            if (!string.IsNullOrEmpty(_led1Port) || !string.IsNullOrEmpty(_led2Port))
+            {
+                _ledController = new LedController(_led1Port, _led2Port, _sideBrightness);
+            }
+
+            if (_io4Enabled)
+            {
+                _io4Controller = new Io4Controller(_io4TestButton, _io4ServiceButton);
+                // TEST starts the selected option
+                _io4Controller.OnTest += () => Dispatcher.Invoke(() => ProcessInput(Key.Enter));
+                // SERVICE cycles through the options
+                _io4Controller.OnService += () => Dispatcher.Invoke(() => CycleSelection());
+            }
+        }
+
+        // Resets the slider and LED boards and closes their ports so the game can use them
+        private void ReleaseDevices()
+        {
+            _sliderController?.Dispose();
+            _sliderController = null;
+            _ledController?.Dispose();
+            _ledController = null;
+            _io4Controller?.Dispose();
+            _io4Controller = null;
+        }
+
+        // Moves the highlight to the next game, wrapping back to the first one
+        private void CycleSelection()
+        {
+            if (_games.Count == 0) return;
+
+            GamesList.SelectedIndex = (GamesList.SelectedIndex + 1) % _games.Count;
+            GamesList.ScrollIntoView(GamesList.SelectedItem);
+
+            if (_timerActive)
+            {
+                _timerActive = false;
+                CountdownText.Text = "";
+            }
+        }
+
         private void LaunchGame(GameItem game)
         {
             if (string.IsNullOrEmpty(game.ExecutablePath) || game.Name == "Error") return;
 
+            ReleaseDevices();
+
+            if (!StartGame(game))
+            {
+                ReclaimDevices();
+                return;
+            }
+
+            // Keep running in the background so the game can be brought back when it closes
+            WindowState = WindowState.Minimized;
+        }
+
+        private bool StartGame(GameItem game)
+        {
             try
             {
                 var startInfo = new ProcessStartInfo();
@@ -522,15 +587,59 @@ namespace ChuniLauncher.Net
                     startInfo.UseShellExecute = true;
                 }
 
-                Process.Start(startInfo);
+                _gameProcess?.Dispose();
+                _gameProcess = Process.Start(startInfo);
+
+                // A null process means an existing instance was reused, so there is nothing to watch
+                _watchingGame = _gameProcess != null;
+                if (_gameProcess != null)
+                {
+                    _gameProcess.EnableRaisingEvents = true;
+                    _gameProcess.Exited += GameProcess_Exited;
+                }
+                return true;
             }
             catch (Exception ex)
             {
+                _watchingGame = false;
                 MessageBox.Show($"Error launching '{game.ExecutablePath}':\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
+        }
 
-            // Close launcher after launching game, matching original behavior
-            Application.Current.Shutdown();
+        private void GameProcess_Exited(object? sender, EventArgs e)
+        {
+            // Exited is raised on a thread pool thread, so hop back to the UI thread
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (!_watchingGame) return;
+
+                // Short pause so the game can finish releasing its ports before the launcher takes them back
+                var relaunchTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(RelaunchDelayMs) };
+                relaunchTimer.Tick += (s, args) =>
+                {
+                    relaunchTimer.Stop();
+                    ReclaimDevices();
+                };
+                relaunchTimer.Start();
+            }));
+        }
+
+        // Brings the launcher back up with its devices and window, used after the game closes or fails to start
+        private void ReclaimDevices()
+        {
+            _watchingGame = false;
+            InitializeDevices();
+            UpdateCategoryDisplay();
+            WindowState = WindowState.Normal;
+            Activate();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            _watchingGame = false;
+            ReleaseDevices();
+            base.OnClosed(e);
         }
     }
 }

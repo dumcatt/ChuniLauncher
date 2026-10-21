@@ -168,8 +168,11 @@ namespace ChuniLauncher.Net
             long currentChecksum = 0;
             bool escapeNext = false;
 
-            // Bootstrap
+            // Stop any stream left running by the previous owner, then bootstrap
+            SendPacket(0x04, new byte[0]);
+            Thread.Sleep(100);
             SendPacket(0x10, new byte[0]);
+            DateTime lastBootstrap = DateTime.Now;
             bool initDone = false;
             bool infoDone = false;
             _lastKeepAlive = DateTime.Now;
@@ -179,6 +182,13 @@ namespace ChuniLauncher.Net
             {
                 try
                 {
+                    // Retry the bootstrap if the board hasn't answered yet
+                    if (!infoDone && (DateTime.Now - lastBootstrap).TotalMilliseconds > 1000)
+                    {
+                        lastBootstrap = DateTime.Now;
+                        SendPacket(0x10, new byte[0]);
+                    }
+
                     if (infoDone && (DateTime.Now - _lastKeepAlive).TotalMilliseconds > 500)
                     {
                         UpdateLeds();
@@ -250,6 +260,9 @@ namespace ChuniLauncher.Net
 
         private void ProcessPacket(byte command, byte[] data, ref bool initDone, ref bool infoDone)
         {
+            // Ignore input once we've been asked to release the port
+            if (!_isRunning) return;
+
             if (!initDone && command == 0x10 && data.Length == 0)
             {
                 initDone = true;
@@ -370,7 +383,11 @@ namespace ChuniLauncher.Net
             {
                 try
                 {
+                    // Let the read loop finish its current pass so no keep-alive packets follow the stop packet
+                    Thread.Sleep(100);
                     SendPacket(0x04, new byte[0]); // Stop packet
+                    _serialPort.BaseStream.Flush();
+                    Thread.Sleep(50);
                     _serialPort.Close();
                 }
                 catch { }
