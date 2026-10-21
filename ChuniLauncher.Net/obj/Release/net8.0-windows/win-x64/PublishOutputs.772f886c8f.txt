@@ -1,0 +1,6 @@
+C:\Users\papha\AppData\Local\Temp\claude\C--Users-papha\5013d20f-6793-4a5d-bdae-cd6e88f0b7c9\scratchpad\publish-chuni\ChuniLauncher.Net.exe
+C:\Users\papha\AppData\Local\Temp\claude\C--Users-papha\5013d20f-6793-4a5d-bdae-cd6e88f0b7c9\scratchpad\publish-chuni\ChuniLauncher.Net.dll
+C:\Users\papha\AppData\Local\Temp\claude\C--Users-papha\5013d20f-6793-4a5d-bdae-cd6e88f0b7c9\scratchpad\publish-chuni\ChuniLauncher.Net.deps.json
+C:\Users\papha\AppData\Local\Temp\claude\C--Users-papha\5013d20f-6793-4a5d-bdae-cd6e88f0b7c9\scratchpad\publish-chuni\ChuniLauncher.Net.runtimeconfig.json
+C:\Users\papha\AppData\Local\Temp\claude\C--Users-papha\5013d20f-6793-4a5d-bdae-cd6e88f0b7c9\scratchpad\publish-chuni\ChuniLauncher.Net.pdb
+C:\Users\papha\AppData\Local\Temp\claude\C--Users-papha\5013d20f-6793-4a5d-bdae-cd6e88f0b7c9\scratchpad\publish-chuni\System.IO.Ports.dll

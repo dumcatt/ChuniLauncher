@@ -1,0 +1,42 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0/win-x64",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {},
+    ".NETCoreApp,Version=v8.0/win-x64": {
+      "ChuniLauncher.Net/1.0.0": {
+        "dependencies": {
+          "System.IO.Ports": "10.0.11"
+        },
+        "runtime": {
+          "ChuniLauncher.Net.dll": {}
+        }
+      },
+      "System.IO.Ports/10.0.11": {
+        "runtime": {
+          "runtimes/win/lib/net8.0/System.IO.Ports.dll": {
+            "assemblyVersion": "10.0.0.11",
+            "fileVersion": "10.0.1126.37416"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ChuniLauncher.Net/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.IO.Ports/10.0.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-92gu68qcsZXcHhSyGxNdoVoDKxn9nV240k3jdq5b/vAzTt0QsFFE+bCmLKQ5p1XhAgelE5v+VaQEaAFH/JvZSA==",
+      "path": "system.io.ports/10.0.11",
+      "hashPath": "system.io.ports.10.0.11.nupkg.sha512"
+    }
+  }
+}
